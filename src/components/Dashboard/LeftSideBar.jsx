@@ -15,7 +15,7 @@ const LeftSideBar = () => {
             )}
             to={"/"}
           >
-            Product
+            Products
           </Link>
         </li>
         <li>
