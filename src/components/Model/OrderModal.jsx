@@ -5,7 +5,7 @@ import useMutation from "./../../hooks/useMutate";
 import { AiOutlineLoading } from "react-icons/ai";
 import { toast } from "react-toastify";
 
-const OrderModal = ({ openModal, handleModal, order, ordersRefetch }) => {
+const OrderModal = ({ openModal, handleModal, order, handleDataUpdate }) => {
   console.log(order, "d");
   const paymentOptions = useMemo(
     () => [
@@ -75,7 +75,7 @@ const OrderModal = ({ openModal, handleModal, order, ordersRefetch }) => {
     const res = await mutate(updateBody, { method: "put" }, `${order.id}`);
     if (res.status === 200) {
       handleModal(false);
-      ordersRefetch();
+      handleDataUpdate(res.data);
     } else {
       toast(res.message);
     }

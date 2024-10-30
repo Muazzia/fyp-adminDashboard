@@ -1,6 +1,6 @@
 import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { useState } from "react";
-import useMutation from "./../hooks/useMutate";
+import useMutation from "../hooks/useMutate";
 import { LS_TOKEN } from "../constants";
 import { useNavigate } from "react-router-dom";
 
@@ -39,16 +39,6 @@ function SignIn() {
       console.log(err, "error");
     }
   };
-
-  // token ko handle krna or store krna ha abhi koi error a rha ha
-  // live pr admin ni chl rha 500 ka error a rha ha
-
-  // useEffect(() => {
-  //   console.log("data", data);
-  //   if (data?.token) {
-  //     localStorage.setItem(LS_TOKEN, data?.data?.token);
-  //   }
-  // }, [data]);
 
   return (
     <>

@@ -6,15 +6,26 @@ import { useState } from "react";
 import OrderModal from "../../Model/OrderModal";
 
 const Order = () => {
-  const { data, isLoading, isError, refetch } = useFetch("/admin/orders");
+  const { data, isLoading, isError, setData } = useFetch("/admin/orders");
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
 
   const handleModal = (val, order = {}) => {
-    // if (!val) setSelectedOrder(order);
     setOpenModal(val);
     setSelectedOrder(order);
+  };
+
+  const handleDataUpdate = (newObj) => {
+    const newData = data.data.map((order) => {
+      if (order.id === newObj.id) {
+        return newObj;
+      } else {
+        return order;
+      }
+    });
+
+    setData({ ...data, data: newData });
   };
 
   return (
@@ -70,7 +81,7 @@ const Order = () => {
             handleModal={handleModal}
             openModal={openModal}
             order={selectedOrder}
-            ordersRefetch={refetch}
+            handleDataUpdate={handleDataUpdate}
           />
         )}
       </div>
