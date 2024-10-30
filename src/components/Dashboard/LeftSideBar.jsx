@@ -8,7 +8,11 @@ const LeftSideBar = () => {
       <ul>
         <li>
           <Link
-            className={cn(`${loc.pathname === "/" && "text-main fond-bold"}`)}
+            className={cn(
+              `text-md font-bold hover:underline ${
+                loc.pathname === "/" && "text-main"
+              }`
+            )}
             to={"/"}
           >
             Product
@@ -17,7 +21,9 @@ const LeftSideBar = () => {
         <li>
           <Link
             className={cn(
-              `${loc.pathname === "/order" && "text-main fond-bold"}`
+              `text-md font-bold hover:underline ${
+                loc.pathname === "/order" && "text-main fond-bold"
+              }`
             )}
             to={"order"}
           >

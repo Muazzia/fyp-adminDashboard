@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-import { CiCirclePlus } from "react-icons/ci";
+import { IoMdAdd } from "react-icons/io";
 import ProductsTable from "./ProductsTable";
 import ProductModal from "../../Model/ProductModal";
 import useFetch from "../../../hooks/useFetch";
@@ -19,7 +18,7 @@ const Product = () => {
         <div className="flex w-full justify-between">
           <p className="font-bold text-lg">All Products</p>
           <div className="hover:cursor-pointer">
-            <CiCirclePlus
+            <IoMdAdd
               size={25}
               onClick={() => {
                 console.log("btn called");

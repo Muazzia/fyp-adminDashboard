@@ -42,12 +42,10 @@ const OrderModal = ({ openModal, handleModal, order, handleDataUpdate }) => {
   useEffect(() => {
     if (!payment) {
       const paymentVal = paymentOptions.filter(
-        // eslint-disable-next-line react/prop-types
         (o) => o.value === order.paymentStatus
       )[0];
       setPayment(paymentVal);
     }
-    // eslint-disable-next-line react/prop-types
   }, [order.paymentStatus, payment, paymentOptions]);
 
   const [changes, setChanges] = useState(0);
@@ -85,15 +83,14 @@ const OrderModal = ({ openModal, handleModal, order, handleDataUpdate }) => {
   return (
     <div>
       <Modal show={openModal} onClose={() => handleModal(false)}>
-        <Modal.Header>Order Detail {changes}</Modal.Header>
+        <Modal.Header>Order Detail</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
             <p>
               <span className="font-bold">Order Id:</span> {order.id}
             </p>
             <div className="w-full">
-              <span className="font-bold">Payment Status:</span>{" "}
-              {order.paymentStatus}
+              <span className="font-bold">Payment Status:</span>
               <Select
                 className="50%"
                 options={paymentOptions}
@@ -102,7 +99,7 @@ const OrderModal = ({ openModal, handleModal, order, handleDataUpdate }) => {
               />
             </div>
             <div>
-              <span className="font-bold">Status:</span> {order.status}
+              <span className="font-bold">Status:</span>
               <Select
                 className="50%"
                 options={statusOptions}
@@ -119,17 +116,17 @@ const OrderModal = ({ openModal, handleModal, order, handleDataUpdate }) => {
               />
             </div>
             <p>
-              <span className="font-bold">Shipping Address:</span>{" "}
+              <span className="font-bold">Shipping Address: </span>
               {order.shippingAddress}
             </p>
             <p>
-              <span className="font-bold"> Order Amout:</span>{" "}
+              <span className="font-bold"> Order Amout: </span>
               {order.totalAmount}
             </p>
             <p>
-              <span className="font-bold">Order By:</span>
+              <span className="font-bold">Order By: </span>
               <br />
-              <span className="fond-bold">id:</span> {order.user.id} <br />
+              <span className="font-bold">id:</span> {order.user.id} <br />
               <span className="font-bold">name:</span> {order.user.firstName}
               <br />
               <span className="font-bold">email:</span> {order.user.email}
