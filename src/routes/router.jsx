@@ -18,7 +18,7 @@ const router = createBrowserRouter([
       </ProtectedRoutes>
     ),
     children: [
-      { path: "", element: <Product /> },
+      { path: "/", element: <Product /> },
       { path: "order", element: <Order /> },
     ],
   },
