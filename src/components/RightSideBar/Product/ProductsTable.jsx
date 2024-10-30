@@ -112,9 +112,10 @@ const ProductsTable = ({
                   </Table.Cell>
                   <Table.Cell>{product.description}</Table.Cell>
                   <Table.Cell>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2 flex-wrap justify-start ">
                       {product.skinCondition.map((condition, i) => {
-                        return <span key={i}>{condition}</span>;
+                        if (i === 0) return <span key={i}>{condition}</span>;
+                        return <span key={i}>, {condition}</span>;
                       })}
                     </div>
                   </Table.Cell>
