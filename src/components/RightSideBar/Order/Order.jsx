@@ -2,7 +2,8 @@ import SingleOrder from "./SingleOrder";
 import useFetch from "./../../../hooks/useFetch";
 import { Table } from "flowbite-react";
 import Skeleton from "react-loading-skeleton";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { Pagination } from "flowbite-react";
 import OrderModal from "../../Model/OrderModal";
 
 const Order = () => {
@@ -28,10 +29,31 @@ const Order = () => {
     setData({ ...data, data: newData });
   };
 
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const rowsPerPage = 10;
+
+  const onPageChange = (page) => setCurrentPage(page);
+
+  // Calculate total pages
+  const totalPages = useMemo(() => {
+    if (!data?.data?.length) {
+      return 1;
+    }
+    return Math.ceil(data.data.length / rowsPerPage);
+  }, [data, rowsPerPage]);
+
+  // Get rows for the current page
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = useMemo(
+    () => data?.data?.slice(indexOfFirstRow, indexOfLastRow),
+    [indexOfFirstRow, indexOfLastRow, data?.data]
+  );
+
   return (
     <div className="w-full">
       <p className="font-bold text-lg">All Orders</p>
-      <div className="mt-5">
+      <div className="my-5 max-h-[64vh] overflow-auto shadow-md rounded-md border-t">
         <Table>
           <Table.Head>
             <Table.HeadCell>Id</Table.HeadCell>
@@ -62,7 +84,7 @@ const Order = () => {
                 );
               })
             ) : (
-              data?.data?.map((order) => {
+              currentRows?.map((order) => {
                 return (
                   <SingleOrder
                     key={order.id}
@@ -74,6 +96,13 @@ const Order = () => {
             )}
           </Table.Body>
         </Table>
+      </div>
+      <div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
       </div>
       <div>
         {openModal && (

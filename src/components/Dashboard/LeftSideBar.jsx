@@ -5,7 +5,7 @@ const LeftSideBar = () => {
   const loc = useLocation();
   return (
     <div className="px-2 py-2 h-full">
-      <ul>
+      <ul className="flex flex-col gap-2">
         <li>
           <Link
             className={cn(
