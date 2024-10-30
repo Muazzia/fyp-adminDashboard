@@ -107,7 +107,7 @@ const ProductsTable = ({
                   key={product.id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
                 >
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  <Table.Cell className="font-medium text-gray-900 dark:text-white">
                     {product.name}
                   </Table.Cell>
                   <Table.Cell>{product.description}</Table.Cell>

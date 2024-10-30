@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { IoIosClose } from "react-icons/io";
 import useMutation from "./../../hooks/useMutate";
 import cn from "../../utils/cn";
+import { toast } from "react-toastify";
 
-// eslint-disable-next-line react/prop-types
 function ProductModal({ handleModel, openModal, refetchProducts }) {
   const {
     register,
@@ -20,6 +20,10 @@ function ProductModal({ handleModel, openModal, refetchProducts }) {
   const [inputValue, setInputValue] = useState("");
 
   const addSkinCondition = () => {
+    if (inputValue.length > 255)
+      return toast("Please add value under 255 characters", {
+        type: "error",
+      });
     if (inputValue.trim()) {
       setSkinCFields([...skinCFields, inputValue.trim()]); // Add the condition to the list
       setInputValue(""); // Reset the input field
