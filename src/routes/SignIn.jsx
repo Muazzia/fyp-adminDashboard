@@ -3,6 +3,7 @@ import { useState } from "react";
 import useMutation from "../hooks/useMutate";
 import { LS_TOKEN } from "../constants";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineLoading } from "react-icons/ai";
 
 function SignIn() {
   // const [email, setEmail] = useState("");
@@ -91,8 +92,15 @@ function SignIn() {
                 </a>
               </div>
               <div className="w-full">
-                <Button type="submit">
-                  {isLoading ? "...Loading" : "Log in to your account"}
+                <Button
+                  type="submit"
+                  isProcessing={isLoading}
+                  disabled={isLoading}
+                  processingSpinner={
+                    <AiOutlineLoading className="h-6 w-6 animate-spin" />
+                  }
+                >
+                  Log in to your account
                 </Button>
               </div>
             </div>
