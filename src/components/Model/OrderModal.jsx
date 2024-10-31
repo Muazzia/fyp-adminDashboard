@@ -6,7 +6,6 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { toast } from "react-toastify";
 
 const OrderModal = ({ openModal, handleModal, order, handleDataUpdate }) => {
-  console.log(order, "d");
   const paymentOptions = useMemo(
     () => [
       { value: "paid", label: "Paid" },
@@ -28,13 +27,17 @@ const OrderModal = ({ openModal, handleModal, order, handleDataUpdate }) => {
   const [status, setStatus] = useState("");
   const [payment, setPayment] = useState("");
   const [updateBody, setUpdateBody] = useState({});
+  const [changes, setChanges] = useState(0);
+
+  const { isLoading, mutate } = useMutation("/admin/orders");
 
   useEffect(() => {
     if (!status) {
       const statusVal = statusOptions.filter(
-        // eslint-disable-next-line react/prop-types
         (o) => o.value === order.status
       )[0];
+
+      if (!statusVal) return setStatus({});
       setStatus(statusVal);
     }
   }, [statusOptions, order.status, status]);
@@ -44,11 +47,11 @@ const OrderModal = ({ openModal, handleModal, order, handleDataUpdate }) => {
       const paymentVal = paymentOptions.filter(
         (o) => o.value === order.paymentStatus
       )[0];
+
       setPayment(paymentVal);
     }
   }, [order.paymentStatus, payment, paymentOptions]);
 
-  const [changes, setChanges] = useState(0);
   useEffect(() => {
     let changeCount = 0;
     const updatedFields = {};
@@ -59,15 +62,15 @@ const OrderModal = ({ openModal, handleModal, order, handleDataUpdate }) => {
     }
 
     if (status?.value !== order.status) {
-      changeCount += 1;
-      updatedFields.status = status.value;
+      if (status?.value) {
+        changeCount += 1;
+        updatedFields.status = status.value;
+      }
     }
 
     setChanges(changeCount);
     setUpdateBody(updatedFields);
   }, [payment, status, order.paymentStatus, order.status]);
-
-  const { isLoading, mutate } = useMutation("/admin/orders");
 
   const handleUpdate = async () => {
     const res = await mutate(updateBody, { method: "put" }, `${order.id}`);
