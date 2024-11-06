@@ -1,20 +1,19 @@
 import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { useState } from "react";
 import useMutation from "../hooks/useMutate";
-import { LS_TOKEN } from "../constants";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineLoading } from "react-icons/ai";
+import { toast } from "react-toastify";
 
-function SignIn() {
-  // const [email, setEmail] = useState("");
-
-  const { mutate, isLoading, error, isError } = useMutation("/admin/login");
+function ForgotPassword() {
+  const { mutate, isLoading, error, isError } = useMutation(
+    "/admin/forgot-password"
+  );
 
   const nav = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
   });
 
   const handleChange = (e) => {
@@ -24,17 +23,21 @@ function SignIn() {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const { email, password } = formData;
-      if (!email || !password) {
-        return console.log("Enter both");
+      const { email } = formData;
+      if (!email) {
+        return console.log("Enter Email");
       }
 
-      const res = await mutate({ email, password });
+      const res = await mutate({ email });
       if (res.status === 200) {
-        if (res?.data.token) {
-          localStorage.setItem(LS_TOKEN, res?.data.token);
-          nav("/");
-        }
+        // if (res?.data.token) {
+        //   localStorage.setItem(LS_TOKEN, res?.data.token);
+        //   nav("/");
+        // }
+        toast(res.data, {
+          type: "success",
+        });
+        nav("/new-password");
       }
     } catch (err) {
       console.log(err, "error");
@@ -48,11 +51,11 @@ function SignIn() {
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
               <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                Sign in to our platform
+                Forgot Password
               </h3>
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="email" value="Your email" />
+                  <Label htmlFor="email" value="Enter Your Email" />
                 </div>
                 <TextInput
                   id="email"
@@ -64,19 +67,6 @@ function SignIn() {
                 />
               </div>
               <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="password" value="Your password" />
-                </div>
-                <TextInput
-                  id="password"
-                  type="password"
-                  name="password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
                 {isError && (
                   <p className="text-red-500">
                     {JSON.stringify(error?.message)}
@@ -85,10 +75,10 @@ function SignIn() {
               </div>
               <div className="flex justify-end w-full">
                 <Link
-                  to={"/forgot-password"}
+                  to={"/signin"}
                   className="text-sm text-cyan-700 hover:underline dark:text-cyan-500"
                 >
-                  Lost Password?
+                  Sign In
                 </Link>
               </div>
               <div className="w-full">
@@ -100,7 +90,7 @@ function SignIn() {
                     <AiOutlineLoading className="h-6 w-6 animate-spin" />
                   }
                 >
-                  Log in to your account
+                  Send Code
                 </Button>
               </div>
             </div>
@@ -111,4 +101,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default ForgotPassword;
