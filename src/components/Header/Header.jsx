@@ -1,6 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaPowerOff } from "react-icons/fa6";
 import { LS_TOKEN } from "./../../constants/index";
+import { Avatar, Dropdown } from "flowbite-react";
+import cn from "../../utils/cn";
 const Header = () => {
   const nav = useNavigate();
 
@@ -14,7 +16,55 @@ const Header = () => {
       <Link to={"/"} className="font-bold cursor-pointer">
         Skin Guardian
       </Link>
-      <FaPowerOff onClick={handleClick} className="hover:cursor-pointer" />
+      <div className=" flex gap-3 items-center">
+        <FaPowerOff
+          size={22}
+          onClick={handleClick}
+          className="hover:cursor-pointer"
+        />
+        <DropDown />
+      </div>
+    </div>
+  );
+};
+
+const DropDown = () => {
+  const loc = useLocation();
+  return (
+    <div className="relative ">
+      <Dropdown
+        renderTrigger={() => (
+          <div>
+            <Avatar
+              className="hover:cursor-pointer"
+              size="xs"
+              placeholderInitials="R"
+              rounded
+            />
+          </div>
+        )}
+        label="Dropdown button"
+        dismissOnClick={true}
+      >
+        <Dropdown.Item
+          className={cn(
+            `${
+              loc.pathname === "/" && "bg-main text-white"
+            } text-sm hover:text-black`
+          )}
+        >
+          <Link to={"/"}>Dashboard</Link>
+        </Dropdown.Item>
+        <Dropdown.Item
+          className={cn(
+            `${
+              loc.pathname === "/resetPassword" && "bg-main text-white"
+            } text-sm hover:text-black`
+          )}
+        >
+          <Link to={"/resetPassword"}>Change Passowrd</Link>
+        </Dropdown.Item>
+      </Dropdown>
     </div>
   );
 };
