@@ -307,7 +307,9 @@ function EditProductModal({
                         "Max file size is 5MB",
                       acceptedFormats: (files) =>
                         !files?.[0] ||
-                        ["image/jpeg", "image/png"].includes(files[0]?.type) ||
+                        ["image/jpeg", "image/png", "image/webp"].includes(
+                          files[0]?.type
+                        ) ||
                         "Only JPEG and PNG formats are allowed",
                     },
                     onChange: (e) => {
