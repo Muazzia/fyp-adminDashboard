@@ -121,7 +121,7 @@ const ProductsTable = ({
                   </Table.Cell>
                   <Table.Cell>{product.category}</Table.Cell>
                   <Table.Cell>{product.stock}</Table.Cell>
-                  <Table.Cell>${product.price}</Table.Cell>
+                  <Table.Cell>{product.price} Rs</Table.Cell>
                   <Table.Cell>
                     <div className="flex space-x-2 items-center justify-center">
                       <div>
