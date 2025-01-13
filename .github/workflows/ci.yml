@@ -1,0 +1,32 @@
+name: "Admin Dashboard file"
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up node js
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm intsall
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
