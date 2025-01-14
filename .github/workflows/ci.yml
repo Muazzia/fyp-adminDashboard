@@ -1,4 +1,4 @@
-name: "Admin Dashboard file"
+name: CI
 
 on:
   push:
@@ -6,30 +6,55 @@ on:
   pull_request:
     branches: ["main"]
 
+env:
+  CI: false
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+      pages: "write"
+      actions: "write"
+      checks: "write"
+      deployments: "write"
+    strategy:
+      matrix:
+        node-version: [18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          fetch-depth: 0
-
-      - name: Set up node js
-        uses: actions/setup-node@v4.1.0
-        with:
-          node-version: 18
+          node-version: ${{ matrix.node-version }}
           cache: "npm"
+      - name: Install dependencies
+        # Using npm ci is generally faster than running npm i because it caches dependencies
+        run: |
+          npm ci
+      - name: Build the app
+        run: |
+          npm run build
+      - name: Run component tests
+        run: |
+          npm run test
 
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: "dist" # Directory to deploy (React's build folder )
+          # Upload build directory content
+          path: "dist/"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
