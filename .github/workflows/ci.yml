@@ -1,4 +1,4 @@
-name: CI
+name: "Admin Dashboard file"
 
 on:
   push:
@@ -6,52 +6,30 @@ on:
   pull_request:
     branches: ["main"]
 
-env:
-  CI: false
-
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    permissions:
-      contents: "read"
-      id-token: "write"
-      pages: "write"
-      actions: "write"
-      checks: "write"
-      deployments: "write"
-    strategy:
-      matrix:
-        node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - name: Install dependencies
-        # Using npm ci is generally faster than running npm i because it caches dependencies
-        run: |
-          npm ci
-      - name: Build the app
-        run: |
-          npm run build
+          fetch-depth: 0
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Set up node js
+        uses: actions/setup-node@v4.1.0
         with:
-          # Upload build directory content
-          path: "dist/"
+          node-version: 18
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: "dist" # Directory to deploy (React's build folder )
